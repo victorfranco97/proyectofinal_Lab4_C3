@@ -4,18 +4,24 @@ import { transformBigInt } from '../utils/prismaUtils';
 const prisma = new PrismaClient();
 
 export class OrdenCompraService {
-  async create(data: { id_usuario_direccion: number; total: number; fecha: string }): Promise<any> {
+  async create(data: { id_usuario_direccion: number; total: number; fecha_compra: string }): Promise<any> {
     try {
       console.log('Creating orden_compra with data:', data);
       const ordenCompra = await prisma.orden_Compra.create({
         data: {
-          id_usuario_direccion: BigInt(data.id_usuario_direccion),
           total: data.total,
-          fecha: data.fecha ? new Date(data.fecha) : new Date(), // Compatible con DateTime
-        } as Prisma.Orden_CompraCreateInput, // Forzamos el tipo correcto
+          fecha_compra: data.fecha_compra ? new Date(data.fecha_compra) : new Date(),
+          usuario_direccion: { connect: { id: BigInt(data.id_usuario_direccion) } },
+        },
+        include: { usuario_direccion: true }, // Incluir la relación en la respuesta
       });
       console.log('Orden_Compra created:', ordenCompra);
-      const transformed = transformBigInt(ordenCompra);
+      // Convertir fecha_compra a string antes de transformBigInt
+      const ordenCompraWithStringDate = {
+        ...ordenCompra,
+        fecha_compra: ordenCompra.fecha_compra ? ordenCompra.fecha_compra.toISOString() : new Date().toISOString(),
+      };
+      const transformed = transformBigInt(ordenCompraWithStringDate);
       console.log('Transformed result:', transformed);
       return transformed;
     } catch (error) {
@@ -35,29 +41,47 @@ export class OrdenCompraService {
 
   async getById(id: number): Promise<any> {
     try {
+      console.log('Fetching orden with id:', id, 'as BigInt:', BigInt(id)); // Depuración
       const orden = await prisma.orden_Compra.findUnique({ where: { id: BigInt(id) }, include: { usuario_direccion: true } });
-      if (!orden) throw new Error('Orden_Compra not found');
-      return transformBigInt(orden);
+      if (!orden) {
+        throw new Error('Orden_Compra not found');
+      }
+      const ordenWithStringDate = {
+        ...orden,
+        fecha_compra: orden.fecha_compra ? orden.fecha_compra.toISOString() : new Date().toISOString(),
+      };
+      return transformBigInt(ordenWithStringDate);
     } catch (error) {
+      console.error('Error fetching orden:', error);
+      if ((error as Error).message === 'Orden_Compra not found') {
+        throw new Error('Orden_Compra not found'); // Esto será capturado como 404 por el controlador
+      }
       throw new Error('Error fetching orden: ' + (error as Error).message);
     }
   }
 
-  async update(id: number, data: { id_usuario_direccion?: number; total?: number; fecha?: string }): Promise<any> {
+  async update(id: number, data: { id_usuario_direccion?: number; total?: number; fecha_compra?: string }): Promise<any> {
     try {
-      const updateData = {};
-      if (data.id_usuario_direccion !== undefined) updateData['id_usuario_direccion'] = BigInt(data.id_usuario_direccion);
+      const updateData: Partial<Prisma.Orden_CompraUpdateInput> = {};
+      if (data.id_usuario_direccion !== undefined) {
+        updateData['usuario_direccion'] = { connect: { id: BigInt(data.id_usuario_direccion) } };
+      }
       if (data.total !== undefined) updateData['total'] = data.total;
-      if (data.fecha !== undefined) updateData['fecha'] = new Date(data.fecha);
+      if (data.fecha_compra !== undefined) updateData['fecha_compra'] = new Date(data.fecha_compra);
       if (Object.keys(updateData).length === 0) {
         throw new Error('No valid fields to update');
       }
       const orden = await prisma.orden_Compra.update({
         where: { id: BigInt(id) },
-        data: updateData as Prisma.Orden_CompraUpdateInput,
+        data: updateData,
+        include: { usuario_direccion: true }, // Incluir la relación en la actualización
       });
       if (!orden) throw new Error('Orden_Compra not found');
-      return transformBigInt(orden);
+      const ordenWithStringDate = {
+        ...orden,
+        fecha_compra: orden.fecha_compra ? orden.fecha_compra.toISOString() : new Date().toISOString(),
+      };
+      return transformBigInt(ordenWithStringDate);
     } catch (error) {
       throw new Error('Error updating orden: ' + (error as Error).message);
     }

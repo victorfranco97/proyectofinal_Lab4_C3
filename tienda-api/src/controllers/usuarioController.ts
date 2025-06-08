@@ -55,18 +55,33 @@ export class UsuarioController {
       res.status(404).json({ error: (error as Error).message });
     }
   }
-
+  
   async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
-      const user = await usuarioService.getById((await usuarioService.login(email, password)).id); // Ajuste
+      const loginResult = await usuarioService.login(email, password);
+  
+      if (!loginResult) {
+        throw new Error('Invalid credentials');
+      }
+  
+      const user = await usuarioService.getById(Number(loginResult));
+  
       if (!user || !(await bcrypt.compare(password, user.password))) {
         throw new Error('Invalid credentials');
       }
-      const token = jwt.sign({ id: user.id.toString(), email: user.email }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+  
+      const token = jwt.sign(
+        { id: user.id.toString(), email: user.email },
+        process.env.JWT_SECRET as string,
+        { expiresIn: '1h' }
+      );
+  
       res.json({ token });
     } catch (error) {
       res.status(401).json({ error: (error as Error).message });
     }
   }
+
+  
 }

@@ -41,7 +41,16 @@ export class UsuarioDireccionController {
       res.status(500).json({ error: (error as Error).message });
     }
   }
-
+  async update(req: Request, res: Response) {
+    try {
+      const { usuario_id, direccion_id } = req.body;
+      const usuarioDireccion = await usuarioDireccionService.update(Number(req.params.id), { usuario_id, direccion_id });
+      if (!usuarioDireccion) return res.status(404).json({ error: 'Usuario_Direccion not found' });
+      res.json(usuarioDireccion);
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
+  }
   async delete(req: Request, res: Response) {
     try {
       await usuarioDireccionService.delete(Number(req.params.id));
