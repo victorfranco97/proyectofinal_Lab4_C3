@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id          BigInt              @id @default(autoincrement())
+  password    String
+  email       String              @unique
+  nombre      String
+  dni         String
+  rol         String
+  direcciones Usuario_Direccion[]
+}
+
+model Direccion {
+  id           BigInt           @id @default(autoincrement())
+  departamento String
+  localidad    String
+  provincia    String
+  pais         String?
+  usuarios     Usuario_Direccion[]
+}
+
+model Usuario_Direccion {
+  id             BigInt         @id @default(autoincrement())
+  usuario_id     BigInt
+  direccion_id   BigInt
+  usuario        Usuario        @relation(fields: [usuario_id], references: [id])
+  direccion      Direccion      @relation(fields: [direccion_id], references: [id])
+  ordenes_compra Orden_Compra[] @relation("UsuarioDireccion_OrdenCompra")
+
+  @@unique([usuario_id, direccion_id])
+}
+
+model Orden_Compra {
+  id                   BigInt                 @id @default(autoincrement())
+  fecha_compra         DateTime
+  id_usuario_direccion BigInt
+  usuario_direccion    Usuario_Direccion      @relation(fields: [id_usuario_direccion], references: [id], name: "UsuarioDireccion_OrdenCompra")
+  total                Float // Nuevo campo agregado
+  detalles             Orden_Compra_Detalle[]
+
+  @@index([id_usuario_direccion])
+}
+
+model Orden_Compra_Detalle {
+  id                  BigInt           @id @default(autoincrement())
+  id_orden_compra     BigInt
+  id_producto         BigInt
+  id_talle            BigInt
+  id_precio_descuento BigInt
+  id_imagen           BigInt
+  detalle             Boolean          @default(false)
+  orden_compra        Orden_Compra     @relation(fields: [id_orden_compra], references: [id])
+  producto            Producto         @relation(fields: [id_producto], references: [id])
+  talle               Talle            @relation(fields: [id_talle], references: [id])
+  precio_descuento    Precio_Descuento @relation(fields: [id_precio_descuento], references: [id])
+  imagen              Imagen           @relation(fields: [id_imagen], references: [id])
+}
+
+model Producto {
+  id           BigInt                 @id @default(autoincrement())
+  categoria_id BigInt
+  nombre       String
+  sexo         String
+  categoria    Categoria              @relation(fields: [categoria_id], references: [id])
+  detalles     Orden_Compra_Detalle[]
+}
+
+model Categoria {
+  id        BigInt     @id @default(autoincrement())
+  nombre    String
+  productos Producto[]
+}
+
+model Talle {
+  id       BigInt                 @id @default(autoincrement())
+  numero   String
+  detalles Orden_Compra_Detalle[]
+}
+
+model Precio {
+  id                BigInt             @id @default(autoincrement())
+  precio_compra     Float
+  precio_venta      Float
+  precio_descuentos Precio_Descuento[]
+}
+
+model Precio_Descuento {
+  id             BigInt                 @id @default(autoincrement())
+  descuento_id   BigInt
+  precio_id      BigInt
+  descuento      Descuento              @relation(fields: [descuento_id], references: [id])
+  precio         Precio                 @relation(fields: [precio_id], references: [id])
+  orden_detalles Orden_Compra_Detalle[]
+}
+
+model Descuento {
+  id                BigInt             @id @default(autoincrement())
+  fecha_final       DateTime
+  fecha_inicio      DateTime
+  porcentaje        String
+  precio_descuentos Precio_Descuento[]
+}
+
+model Imagen {
+  id             BigInt                 @id @default(autoincrement())
+  url            String
+  orden_detalles Orden_Compra_Detalle[]
+}
