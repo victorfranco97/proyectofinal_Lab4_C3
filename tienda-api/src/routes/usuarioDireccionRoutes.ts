@@ -1,14 +1,31 @@
 import { Router } from 'express';
 import { UsuarioDireccionController } from '../controllers/usuarioDireccionController';
-import { authenticateToken } from '../middleware/auth';
+import {
+  authenticateToken,
+  requireAdmin,
+  requireAdminOrCliente
+} from '../middleware/auth';
+import {
+  enforceUserIdInBody,
+  filterByUser
+} from '../middleware/ownership';
 
 const router = Router();
 const usuarioDireccionController = new UsuarioDireccionController();
 
-router.post('/usuario-direccion', authenticateToken, usuarioDireccionController.create.bind(usuarioDireccionController));
-router.get('/usuario-direccion', authenticateToken, usuarioDireccionController.getAll.bind(usuarioDireccionController));
-router.get('/usuario-direccion/:id', authenticateToken, usuarioDireccionController.getById.bind(usuarioDireccionController));
-router.put('/usuario-direccion/:id', authenticateToken, usuarioDireccionController.update.bind(usuarioDireccionController));
-router.delete('/usuario-direccion/:id', authenticateToken, usuarioDireccionController.delete.bind(usuarioDireccionController));
+// Crear relación usuario-dirección: forzar usuario autenticado
+router.post('/usuario-direccion', authenticateToken, requireAdminOrCliente, enforceUserIdInBody, usuarioDireccionController.create.bind(usuarioDireccionController));
+
+// Listar relaciones: admin ve todas, usuarios ven solo las suyas
+router.get('/usuario-direccion', authenticateToken, requireAdminOrCliente, filterByUser, usuarioDireccionController.getAll.bind(usuarioDireccionController));
+
+// Ver relación específica: admin puede ver todas, usuarios solo las suyas
+router.get('/usuario-direccion/:id', authenticateToken, requireAdminOrCliente, usuarioDireccionController.getById.bind(usuarioDireccionController));
+
+// Actualizar relación: solo admin
+router.put('/usuario-direccion/:id', authenticateToken, requireAdmin, usuarioDireccionController.update.bind(usuarioDireccionController));
+
+// Eliminar relación: solo admin
+router.delete('/usuario-direccion/:id', authenticateToken, requireAdmin, usuarioDireccionController.delete.bind(usuarioDireccionController));
 
 export default router;

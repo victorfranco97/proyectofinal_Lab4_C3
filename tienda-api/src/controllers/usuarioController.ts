@@ -66,7 +66,7 @@ export class UsuarioController {
       const user = await usuarioService.login(email, password);
 
       const token = jwt.sign(
-        { id: user.id.toString(), email: user.email },
+        { id: user.id.toString(), email: user.email, rol: user.rol },
         process.env.JWT_SECRET as string,
         { expiresIn: '1h' }
       );

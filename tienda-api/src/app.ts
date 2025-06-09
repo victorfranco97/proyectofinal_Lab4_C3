@@ -6,6 +6,7 @@ import categoriaRoutes from './routes/categoriaRoutes';
 import descuentoRoutes from './routes/descuentoRoutes';
 import direccionRoutes from './routes/direccionRoutes';
 import imagenRoutes from './routes/imagenRoutes';
+import ordenCompraDetalleRoutes from './routes/ordenCompraDetalleRoutes';
 import ordenCompraRoutes from './routes/ordenCompraRoutes';
 import precioDescuentoRoutes from './routes/precioDescuentoRoutes';
 import precioRoutes from './routes/precioRoutes';
@@ -47,6 +48,7 @@ app.use('/api', usuarioRoutes);
 app.use('/api', direccionRoutes);
 app.use('/api', usuarioDireccionRoutes);
 app.use('/api', ordenCompraRoutes);
+app.use('/api', ordenCompraDetalleRoutes);
 app.use('/api', categoriaRoutes);
 app.use('/api', productoRoutes);
 app.use('/api', talleRoutes);
@@ -59,16 +61,18 @@ app.use('/api', imagenRoutes);
 app.use('*', (req, res) => {
   res.status(404).json({
     error: 'Route not found',
-    message: `Cannot ${req.method} ${req.originalUrl}`,
-    availableRoutes: {
+    message: `Cannot ${req.method} ${req.originalUrl}`, availableRoutes: {
       usuarios: '/api/usuarios',
       direcciones: '/api/direcciones',
+      usuarioDirecciones: '/api/usuario-direcciones',
       categorias: '/api/categorias',
       productos: '/api/productos',
       ordenes: '/api/ordenes-compra',
+      ordenDetalles: '/api/orden-compra-detalles',
       talles: '/api/talles',
       precios: '/api/precios',
       descuentos: '/api/descuentos',
+      precioDescuentos: '/api/precio-descuentos',
       imagenes: '/api/imagenes'
     }
   });

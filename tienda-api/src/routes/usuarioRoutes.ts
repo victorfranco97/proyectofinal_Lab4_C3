@@ -1,15 +1,30 @@
 import { Router } from 'express';
 import { UsuarioController } from '../controllers/usuarioController';
-import { authenticateToken } from '../middleware/auth';
+import {
+  authenticateAndValidateOwnData,
+  authenticateToken,
+  requireAdmin
+} from '../middleware/auth';
 
 const router = Router();
 const usuarioController = new UsuarioController();
 
-router.get('/usuarios', authenticateToken, usuarioController.getAll.bind(usuarioController));
-router.get('/usuarios/:id', authenticateToken, usuarioController.getById.bind(usuarioController));
+// Solo admin puede listar todos los usuarios
+router.get('/usuarios', authenticateToken, requireAdmin, usuarioController.getAll.bind(usuarioController));
+
+// Usuario puede ver su propio perfil, admin puede ver cualquiera
+router.get('/usuarios/:id', authenticateAndValidateOwnData, usuarioController.getById.bind(usuarioController));
+
+// Registro público (sin autenticación)
 router.post('/usuarios/register', usuarioController.register.bind(usuarioController));
-router.put('/usuarios/:id', authenticateToken, usuarioController.update.bind(usuarioController));
-router.delete('/usuarios/:id', authenticateToken, usuarioController.delete.bind(usuarioController));
+
+// Usuario puede actualizar su propio perfil, admin puede actualizar cualquiera
+router.put('/usuarios/:id', authenticateAndValidateOwnData, usuarioController.update.bind(usuarioController));
+
+// Solo admin puede eliminar usuarios
+router.delete('/usuarios/:id', authenticateToken, requireAdmin, usuarioController.delete.bind(usuarioController));
+
+// Login público (sin autenticación)
 router.post('/usuarios/login', usuarioController.login.bind(usuarioController));
 
 export default router;
