@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import { UsuarioService } from '../services/usuarioService';
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { UsuarioService } from '../services/usuarioService';
 
 const usuarioService = new UsuarioService();
 
@@ -9,8 +8,7 @@ export class UsuarioController {
   async register(req: Request, res: Response) {
     try {
       const { nombre, email, password, dni, rol } = req.body;
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const usuario = await usuarioService.create({ nombre, email, password: hashedPassword, dni, rol });
+      const usuario = await usuarioService.create({ nombre, email, password: password, dni, rol });
       res.status(201).json(usuario);
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
@@ -55,33 +53,41 @@ export class UsuarioController {
       res.status(404).json({ error: (error as Error).message });
     }
   }
-  
   async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
-      const loginResult = await usuarioService.login(email, password);
-  
-      if (!loginResult) {
-        throw new Error('Invalid credentials');
+
+      // Validar que se proporcionen email y password
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required' });
       }
-  
-      const user = await usuarioService.getById(Number(loginResult));
-  
-      if (!user || !(await bcrypt.compare(password, user.password))) {
-        throw new Error('Invalid credentials');
-      }
-  
+
+      // El servicio ya maneja la validación del password
+      const user = await usuarioService.login(email, password);
+
       const token = jwt.sign(
         { id: user.id.toString(), email: user.email },
         process.env.JWT_SECRET as string,
         { expiresIn: '1h' }
       );
-  
-      res.json({ token });
+      if (!token) {
+        return res.status(500).json({ error: 'Error generating token' });
+      }
+      //add expires in miliseconds
+
+      res.json({
+        id: user.id,
+        nombre: user.nombre,
+        detailToken: {
+          token,
+          expiresIn: 3600000, // 1 hour in milliseconds
+          issuedAt: new Date().toISOString(),
+        }
+      })
     } catch (error) {
       res.status(401).json({ error: (error as Error).message });
     }
   }
 
-  
+
 }

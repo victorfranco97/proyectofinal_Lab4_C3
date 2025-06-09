@@ -5,10 +5,10 @@ import { authenticateToken } from '../middleware/auth';
 const router = Router();
 const precioController = new PrecioController();
 
-router.get('/precios', authenticateToken, precioController.getAll);
-router.get('/precios/:id', authenticateToken, precioController.getById);
-router.post('/precios', authenticateToken, precioController.create);
-router.put('/precios/:id', authenticateToken, precioController.update);
-router.delete('/precios/:id', authenticateToken, precioController.delete);
+router.get('/precios', authenticateToken, precioController.getAll.bind(precioController));
+router.get('/precios/:id', authenticateToken, precioController.getById.bind(precioController));
+router.post('/precios', authenticateToken, precioController.create.bind(precioController));
+router.put('/precios/:id', authenticateToken, precioController.update.bind(precioController));
+router.delete('/precios/:id', authenticateToken, precioController.delete.bind(precioController));
 
 export default router;

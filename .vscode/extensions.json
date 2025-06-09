@@ -1,0 +1,15 @@
+{
+    "recommendations": [
+        "ms-vscode.vscode-typescript-next",
+        "bradlc.vscode-tailwindcss",
+        "prisma.prisma",
+        "ms-vscode.vscode-json",
+        "postman.postman-for-vscode",
+        "rangav.vscode-thunder-client",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-eslint",
+        "formulahendry.auto-rename-tag",
+        "christian-kohler.path-intellisense",
+        "ms-vscode.powershell"
+    ]
+}

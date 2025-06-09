@@ -4,6 +4,7 @@
     "main": "dist/server.js",
     "scripts": {
         "dev": "tsnd --respawn --clear src/server.ts",
+        "debug": "tsnd --respawn --clear --inspect src/server.ts",
         "prisma:generate": "npx prisma generate",
         "prisma:migrate": "npx prisma migrate dev",
         "build": "rimraf ./dist && tsc",
@@ -23,6 +24,7 @@
         "@types/node": "^20.4.0",
         "prisma": "^5.22.0",
         "rimraf": "^5.0.1",
+        "ts-node": "^10.9.0",
         "ts-node-dev": "^2.0.0",
         "typescript": "^5.1.6"
     }

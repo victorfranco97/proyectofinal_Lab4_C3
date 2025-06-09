@@ -1,45 +1,87 @@
 import 'dotenv/config';
 import express from 'express';
-import { UsuarioController } from './controllers/usuarioController';
-import { DireccionController } from './controllers/direccionController';
-import { UsuarioDireccionController } from './controllers/usuarioDireccionController';
-import { OrdenCompraController } from './controllers/ordenCompraController';
+
+// Importar rutas
+import categoriaRoutes from './routes/categoriaRoutes';
+import descuentoRoutes from './routes/descuentoRoutes';
+import direccionRoutes from './routes/direccionRoutes';
+import imagenRoutes from './routes/imagenRoutes';
+import ordenCompraRoutes from './routes/ordenCompraRoutes';
+import precioDescuentoRoutes from './routes/precioDescuentoRoutes';
+import precioRoutes from './routes/precioRoutes';
+import productoRoutes from './routes/productoRoutes';
+import talleRoutes from './routes/talleRoutes';
+import usuarioDireccionRoutes from './routes/usuarioDireccionRoutes';
+import usuarioRoutes from './routes/usuarioRoutes';
+
 const app = express();
+
+// Middleware global
 app.use(express.json());
 
-const usuarioController = new UsuarioController();
-const direccionController = new DireccionController();
-const usuarioDireccionController = new UsuarioDireccionController();
-const ordenCompraController = new OrdenCompraController();
-// Rutas para Usuario
-app.post('/api/usuarios/register', (req, res) => usuarioController.register(req, res));
-app.get('/api/usuarios', (req, res) => usuarioController.getAll(req, res));
-app.get('/api/usuarios/:id', (req, res) => usuarioController.getById(req, res));
-app.put('/api/usuarios/:id', (req, res) => usuarioController.update(req, res));
-app.delete('/api/usuarios/:id', (req, res) => usuarioController.delete(req, res));
-app.post('/api/usuarios/login', (req, res) => usuarioController.login(req, res));
+// Configurar CORS si es necesario
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', process.env.CORS_ORIGIN || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
-// Rutas para Direccion
-app.post('/api/direcciones', (req, res) => direccionController.create(req, res));
-app.get('/api/direcciones', (req, res) => direccionController.getAll(req, res));
-app.get('/api/direcciones/:id', (req, res) => direccionController.getById(req, res));
-app.put('/api/direcciones/:id', (req, res) => direccionController.update(req, res));
-app.delete('/api/direcciones/:id', (req, res) => direccionController.delete(req, res));
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
 
-// Rutas para Usuario_Direccion
-app.post('/api/usuario-direccion', (req, res) => usuarioDireccionController.create(req, res));
-app.get('/api/usuario-direccion', (req, res) => usuarioDireccionController.getAll(req, res));
-app.get('/api/usuario-direccion/:id', (req, res) => usuarioDireccionController.getById(req, res));
-app.put('/api/usuario-direccion/:id', (req, res) => usuarioDireccionController.update(req, res));
-app.delete('/api/usuario-direccion/:id', (req, res) => usuarioDireccionController.delete(req, res));
+// Ruta de health check
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    message: 'Tienda API is running',
+    timestamp: new Date().toISOString(),
+    version: process.env.API_VERSION || 'v1'
+  });
+});
 
-// Rutas para Orden_Compra
-app.post('/api/orden-compra', (req, res) => ordenCompraController.create(req, res));
-app.get('/api/orden-compra', (req, res) => ordenCompraController.getAll(req, res));
-app.get('/api/orden-compra/:id', (req, res) => ordenCompraController.getById(req, res));
-app.put('/api/orden-compra/:id', (req, res) => ordenCompraController.update(req, res));
-app.delete('/api/orden-compra/:id', (req, res) => ordenCompraController.delete(req, res));
+// Configurar todas las rutas con prefijo /api
+app.use('/api', usuarioRoutes);
+app.use('/api', direccionRoutes);
+app.use('/api', usuarioDireccionRoutes);
+app.use('/api', ordenCompraRoutes);
+app.use('/api', categoriaRoutes);
+app.use('/api', productoRoutes);
+app.use('/api', talleRoutes);
+app.use('/api', precioRoutes);
+app.use('/api', descuentoRoutes);
+app.use('/api', precioDescuentoRoutes);
+app.use('/api', imagenRoutes);
 
-// Añadir exportación por defecto
+// Middleware para rutas no encontradas
+app.use('*', (req, res) => {
+  res.status(404).json({
+    error: 'Route not found',
+    message: `Cannot ${req.method} ${req.originalUrl}`,
+    availableRoutes: {
+      usuarios: '/api/usuarios',
+      direcciones: '/api/direcciones',
+      categorias: '/api/categorias',
+      productos: '/api/productos',
+      ordenes: '/api/ordenes-compra',
+      talles: '/api/talles',
+      precios: '/api/precios',
+      descuentos: '/api/descuentos',
+      imagenes: '/api/imagenes'
+    }
+  });
+});
+
+// Middleware de manejo de errores global
+app.use((error: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('Error:', error);
+  res.status(500).json({
+    error: 'Internal Server Error',
+    message: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
+  });
+});
+
 export default app;
 

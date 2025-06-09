@@ -5,10 +5,10 @@ import { authenticateToken } from '../middleware/auth';
 const router = Router();
 const talleController = new TalleController();
 
-router.get('/talles', authenticateToken, talleController.getAll);
-router.get('/talles/:id', authenticateToken, talleController.getById);
-router.post('/talles', authenticateToken, talleController.create);
-router.put('/talles/:id', authenticateToken, talleController.update);
-router.delete('/talles/:id', authenticateToken, talleController.delete);
+router.get('/talles', authenticateToken, talleController.getAll.bind(talleController));
+router.get('/talles/:id', authenticateToken, talleController.getById.bind(talleController));
+router.post('/talles', authenticateToken, talleController.create.bind(talleController));
+router.put('/talles/:id', authenticateToken, talleController.update.bind(talleController));
+router.delete('/talles/:id', authenticateToken, talleController.delete.bind(talleController));
 
-export default router; 
+export default router;

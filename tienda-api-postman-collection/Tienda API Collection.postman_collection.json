@@ -1,0 +1,2351 @@
+{
+	"info": {
+		"_postman_id": "96d46dec-e683-47d8-a16e-d491ec488871",
+		"name": "Tienda API Collection",
+		"description": "Colección completa para probar la API de la tienda con todos los endpoints disponibles",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29327725"
+	},
+	"item": [
+		{
+			"name": "Autenticación",
+			"item": [
+				{
+					"name": "Registrar Usuario",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Juan Pérez\",\n  \"email\": \"juan@email.com\",\n  \"password\": \"password123\",\n  \"dni\": \"12345678\",\n  \"rol\": \"cliente\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Registrar Usuario",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Juan Pérez\",\n  \"email\": \"juan@email.com\",\n  \"password\": \"password123\",\n  \"dni\": \"12345678\",\n  \"rol\": \"cliente\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/usuarios/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"usuarios",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "391"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"187-yenJH2/mA0bsFShgl5XK8IHjVB8\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:14:07 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Error creating user: \\nInvalid `prisma.usuario.create()` invocation in\\nC:\\\\Users\\\\diego\\\\Documents\\\\proyectospropios\\\\proyectofinal_Lab4_C3\\\\tienda-api\\\\src\\\\services\\\\usuarioService.ts:14:44\\n\\n  11 const hashedPassword = await bcrypt.hash(data.password, 10);\\n  12 \\n  13 \\n→ 14 const usuario = await prisma.usuario.create(\\nUnique constraint failed on the fields: (`email`)\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Login Usuario",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"juan@email.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Login Usuario",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"juan@email.com\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/usuarios/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"usuarios",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "294"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"126-IOD+5W6vSxqxsp9Jy+FjqStkICA\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:10:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"12\",\n    \"nombre\": \"Juan Pérez\",\n    \"detailToken\": {\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyIiwiZW1haWwiOiJqdWFuQGVtYWlsLmNvbSIsImlhdCI6MTc0OTQzNTAzNCwiZXhwIjoxNzQ5NDM4NjM0fQ.BkOCt6CvcudmMaOQYtu2V9gQ_oXFQbZY5EtuGWWAToU\",\n        \"expiresIn\": 3600000,\n        \"issuedAt\": \"2025-06-09T02:10:34.412Z\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Obtener Todos los Usuarios",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/usuarios",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener Todos los Usuarios",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/usuarios",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"usuarios"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "111"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"6f-qx6ddJxru/QKYLTkLtsv2fFYuCI\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:16:55 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"12\",\n        \"email\": \"juan@email.com\",\n        \"nombre\": \"Juan Pérez\",\n        \"dni\": \"12345678\",\n        \"rol\": \"cliente\",\n        \"direcciones\": []\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Obtener Usuario por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener Usuario por ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/usuarios/{{user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"usuarios",
+										"{{user_id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "109"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"6d-47+y1S02poxHlzx2Kz1Z8V36+Mk\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:17:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"12\",\n    \"email\": \"juan@email.com\",\n    \"nombre\": \"Juan Pérez\",\n    \"dni\": \"12345678\",\n    \"rol\": \"cliente\",\n    \"direcciones\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar Usuario",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Juan Carlos Péreeeez\",\n  \"email\": \"juan.carlos@email.com\",\n  \"dni\": \"12345678\",\n  \"rol\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Actualizar Usuario",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Juan Carlos Péreeeez\",\n  \"email\": \"juan.carlos@email.com\",\n  \"dni\": \"12345678\",\n  \"rol\": \"admin\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/usuarios/{{user_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"usuarios",
+										"{{user_id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "107"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"6b-ry5PGCuDB0L8WKDelKTqlUGwBYM\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:17:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"12\",\n    \"email\": \"juan.carlos@email.com\",\n    \"nombre\": \"Juan Carlos Péreeeez\",\n    \"dni\": \"12345678\",\n    \"rol\": \"admin\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Eliminar Usuario",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE0IiwiZW1haWwiOiJqdWFuQGVtYWlsLmNvbSIsImlhdCI6MTc0OTQzNzY4NywiZXhwIjoxNzQ5NDQxMjg3fQ.zzWAFUIakJJ9fG1PaKM_dpB5K_u8Nj9Z5NzlDIGpYEs",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Direcciones",
+			"item": [
+				{
+					"name": "Crear Dirección",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"departamento\": \"Mendoza\",\n  \"localidad\": \"Centro\",\n  \"provincia\": \"Montevideo\",\n  \"pais\": \"Uruguay\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/direcciones",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"direcciones"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Crear Dirección",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"departamento\": \"Montevideo\",\n  \"localidad\": \"Centro\",\n  \"provincia\": \"Montevideo\",\n  \"pais\": \"Uruguay\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/direcciones",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"direcciones"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "101"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"65-e+j0l1AfQQIuzeD6TpFdTmTC6ZI\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:18:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"1\",\n    \"departamento\": \"Montevideo\",\n    \"localidad\": \"Centro\",\n    \"provincia\": \"Montevideo\",\n    \"pais\": \"Uruguay\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener Todas las Direcciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/direcciones",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"direcciones"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener Todas las Direcciones",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/direcciones",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"direcciones"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "103"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"67-M6f40DTLDO/4me9E+r9j6a1gSG4\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:19:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"1\",\n        \"departamento\": \"Montevideo\",\n        \"localidad\": \"Centro\",\n        \"provincia\": \"Montevideo\",\n        \"pais\": \"Uruguay\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Obtener Dirección por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/direcciones/{{direccion_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"direcciones",
+								"{{direccion_id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener Dirección por ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/direcciones/{{direccion_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"direcciones",
+										"{{direccion_id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "101"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"65-e+j0l1AfQQIuzeD6TpFdTmTC6ZI\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:19:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"1\",\n    \"departamento\": \"Montevideo\",\n    \"localidad\": \"Centro\",\n    \"provincia\": \"Montevideo\",\n    \"pais\": \"Uruguay\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar Dirección",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"departamento\": \"Caneloneeees\",\n  \"localidad\": \"Las Piedras\",\n  \"provincia\": \"Canelones\",\n  \"pais\": \"Uruguay\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/direcciones/{{direccion_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"direcciones",
+								"{{direccion_id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Actualizar Dirección",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"departamento\": \"Caneloneeees\",\n  \"localidad\": \"Las Piedras\",\n  \"provincia\": \"Canelones\",\n  \"pais\": \"Uruguay\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/direcciones/{{direccion_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"direcciones",
+										"{{direccion_id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "107"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"6b-c+AKQGW2KqdFY3h+eLWK7mZMHwY\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:19:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"1\",\n    \"departamento\": \"Caneloneeees\",\n    \"localidad\": \"Las Piedras\",\n    \"provincia\": \"Canelones\",\n    \"pais\": \"Uruguay\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Eliminar Dirección",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/direcciones/{{direccion_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"direcciones",
+								"{{direccion_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuario-Direccion",
+			"item": [
+				{
+					"name": "Crear Usuario-Direccion",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"usuario_id\": 12,\n  \"direccion_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/usuario-direccion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario-direccion"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Crear Usuario-Direccion",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"usuario_id\": 12,\n  \"direccion_id\": 1\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/usuario-direccion",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"usuario-direccion"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "47"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2f-fEfrdM2u41lKyIqhrzqds1SpQ44\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:19:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"1\",\n    \"usuario_id\": \"12\",\n    \"direccion_id\": \"1\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener Todas las Usuario-Direcciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario-direccion",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario-direccion"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener Todas las Usuario-Direcciones",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/usuario-direccion",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"usuario-direccion"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "361"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"169-OCk7o75LS8SxV4zTJ+jtJBGOMAE\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:19:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"1\",\n        \"usuario_id\": \"12\",\n        \"direccion_id\": \"1\",\n        \"usuario\": {\n            \"id\": \"12\",\n            \"email\": \"juan.carlos@email.com\",\n            \"nombre\": \"Juan Carlos Péreeeez\",\n            \"dni\": \"12345678\",\n            \"rol\": \"admin\"\n        },\n        \"direccion\": {\n            \"id\": \"1\",\n            \"departamento\": \"Caneloneeees\",\n            \"localidad\": \"Las Piedras\",\n            \"provincia\": \"Canelones\",\n            \"pais\": \"Uruguay\"\n        }\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Obtener Usuario-Direccion por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario-direccion/{{usuario_direccion_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario-direccion",
+								"{{usuario_direccion_id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener Usuario-Direccion por ID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/usuario-direccion/{{usuario_direccion_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"usuario-direccion",
+										"{{usuario_direccion_id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "359"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"167-6ExPqGlBzSdq+GGfvDmylXuF8cI\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:21:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"1\",\n    \"usuario_id\": \"12\",\n    \"direccion_id\": \"1\",\n    \"usuario\": {\n        \"id\": \"12\",\n        \"email\": \"juan.carlos@email.com\",\n        \"nombre\": \"Juan Carlos Péreeeez\",\n        \"dni\": \"12345678\",\n        \"rol\": \"admin\"\n    },\n    \"direccion\": {\n        \"id\": \"1\",\n        \"departamento\": \"Caneloneeees\",\n        \"localidad\": \"Las Piedras\",\n        \"provincia\": \"Canelones\",\n        \"pais\": \"Uruguay\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar Usuario-Direccion",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"usuario_id\": 12,\n  \"direccion_id\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/usuario-direccion/{{usuario_direccion_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario-direccion",
+								"{{usuario_direccion_id}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Actualizar Usuario-Direccion",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"usuario_id\": 12,\n  \"direccion_id\": 2\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/usuario-direccion/{{usuario_direccion_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"usuario-direccion",
+										"{{usuario_direccion_id}}"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "47"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2f-ZRQtpoUk5FeR18xr8kXyKliPjP8\""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 09 Jun 2025 02:22:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"1\",\n    \"usuario_id\": \"12\",\n    \"direccion_id\": \"2\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Eliminar Usuario-Direccion",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuario-direccion/{{usuario_direccion_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuario-direccion",
+								"{{usuario_direccion_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orden de Compra",
+			"item": [
+				{
+					"name": "Crear Orden de Compra",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_usuario_direccion\": 1,\n  \"total\": 150.50,\n  \"fecha_compra\": \"2025-06-08T10:30:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/orden-compra",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orden-compra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Todas las Órdenes de Compra",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orden-compra",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orden-compra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Orden de Compra por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orden-compra/{{orden_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orden-compra",
+								"{{orden_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Orden de Compra",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_usuario_direccion\": 1,\n  \"total\": 200.75,\n  \"fecha_compra\": \"2025-06-08T11:00:00.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/orden-compra/{{orden_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orden-compra",
+								"{{orden_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Orden de Compra",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/orden-compra/{{orden_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"orden-compra",
+								"{{orden_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categorías",
+			"item": [
+				{
+					"name": "Crear Categoría",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Camisetas\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Todas las Categorías",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Categoría por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categorias/{{categoria_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categorias",
+								"{{categoria_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Categoría",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Camisetas Deportivas\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/categorias/{{categoria_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categorias",
+								"{{categoria_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Categoría",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/categorias/{{categoria_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categorias",
+								"{{categoria_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Productos",
+			"item": [
+				{
+					"name": "Crear Producto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"categoria_id\": 1,\n  \"nombre\": \"Camiseta Básica\",\n  \"sexo\": \"Unisex\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/productos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Todos los Productos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/productos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Producto por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/productos/{{producto_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{producto_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Producto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"categoria_id\": 1,\n  \"nombre\": \"Camiseta Premium\",\n  \"sexo\": \"Masculino\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/productos/{{producto_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{producto_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Producto",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/productos/{{producto_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"productos",
+								"{{producto_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Talles",
+			"item": [
+				{
+					"name": "Crear Talle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"numero\": \"M\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/talles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"talles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Todos los Talles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/talles",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"talles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Talle por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/talles/{{talle_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"talles",
+								"{{talle_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Talle",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"numero\": \"L\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/talles/{{talle_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"talles",
+								"{{talle_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Talle",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/talles/{{talle_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"talles",
+								"{{talle_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Precios",
+			"item": [
+				{
+					"name": "Crear Precio",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"precio_compra\": 15.50,\n  \"precio_venta\": 25.99\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/precios",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"precios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Todos los Precios",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/precios",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"precios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Precio por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/precios/{{precio_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"precios",
+								"{{precio_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Precio",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"precio_compra\": 18.00,\n  \"precio_venta\": 29.99\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/precios/{{precio_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"precios",
+								"{{precio_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Precio",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/precios/{{precio_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"precios",
+								"{{precio_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Descuentos",
+			"item": [
+				{
+					"name": "Crear Descuento",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fecha_inicio\": \"2025-06-01T00:00:00.000Z\",\n  \"fecha_final\": \"2025-06-30T23:59:59.000Z\",\n  \"porcentaje\": \"15\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/descuentos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"descuentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Todos los Descuentos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/descuentos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"descuentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Descuento por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/descuentos/{{descuento_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"descuentos",
+								"{{descuento_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Descuento",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fecha_inicio\": \"2025-06-01T00:00:00.000Z\",\n  \"fecha_final\": \"2025-07-31T23:59:59.000Z\",\n  \"porcentaje\": \"20\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/descuentos/{{descuento_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"descuentos",
+								"{{descuento_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Descuento",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/descuentos/{{descuento_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"descuentos",
+								"{{descuento_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Precio-Descuentos",
+			"item": [
+				{
+					"name": "Crear Precio-Descuento",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"descuento_id\": 1,\n  \"precio_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/precio-descuentos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"precio-descuentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Todos los Precio-Descuentos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/precio-descuentos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"precio-descuentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Precio-Descuento por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/precio-descuentos/{{precio_descuento_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"precio-descuentos",
+								"{{precio_descuento_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Precio-Descuento",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"descuento_id\": 2,\n  \"precio_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/precio-descuentos/{{precio_descuento_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"precio-descuentos",
+								"{{precio_descuento_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Precio-Descuento",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/precio-descuentos/{{precio_descuento_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"precio-descuentos",
+								"{{precio_descuento_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Imágenes",
+			"item": [
+				{
+					"name": "Crear Imagen",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"url\": \"https://example.com/images/producto1.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/imagenes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"imagenes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Todas las Imágenes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/imagenes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"imagenes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Imagen por ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/imagenes/{{imagen_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"imagenes",
+								"{{imagen_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Imagen",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"url\": \"https://example.com/images/producto1_updated.jpg\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/imagenes/{{imagen_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"imagenes",
+								"{{imagen_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Imagen",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/imagenes/{{imagen_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"imagenes",
+								"{{imagen_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE0IiwiZW1haWwiOiJqdWFuQGVtYWlsLmNvbSIsImlhdCI6MTc0OTQzNzY4NywiZXhwIjoxNzQ5NDQxMjg3fQ.zzWAFUIakJJ9fG1PaKM_dpB5K_u8Nj9Z5NzlDIGpYEs",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "12",
+			"type": "string"
+		},
+		{
+			"key": "direccion_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "usuario_direccion_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "orden_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "categoria_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "producto_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "talle_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "precio_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "descuento_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "precio_descuento_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "imagen_id",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}
