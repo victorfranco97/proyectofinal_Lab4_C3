@@ -17,10 +17,10 @@ export const validateDireccionOwnership = async (req: Request, res: Response, ne
   }
 
   try {
-    const direccionId = req.params.id;
-
-    if (direccionId) {
+    const direccionId = req.params.id; if (direccionId) {
       // Verificar que la dirección pertenezca al usuario autenticado
+      // TODO: Add soft delete filter when Prisma client is regenerated
+      // AND direccion.is_deleted = false AND usuario.is_deleted = false
       const usuarioDireccion = await prisma.usuario_Direccion.findFirst({
         where: {
           direccion_id: BigInt(direccionId),
@@ -55,10 +55,10 @@ export const validateOrdenOwnership = async (req: Request, res: Response, next: 
   }
 
   try {
-    const ordenId = req.params.id;
-
-    if (ordenId) {
+    const ordenId = req.params.id; if (ordenId) {
       // Verificar que la orden pertenezca al usuario autenticado
+      // TODO: Add soft delete filter when Prisma client is regenerated
+      // AND orden.is_deleted = false AND usuario.is_deleted = false
       const orden = await prisma.orden_Compra.findFirst({
         where: { id: BigInt(ordenId) },
         include: {
@@ -152,10 +152,10 @@ export const validateDetalleOrdenOwnership = async (req: Request, res: Response,
 
   try {
     const detalleId = req.params.id;
-    const ordenId = req.body.id_orden_compra || req.params.orden_id;
-
-    if (detalleId) {
+    const ordenId = req.body.id_orden_compra || req.params.orden_id; if (detalleId) {
       // Verificar que el detalle pertenezca a una orden del usuario
+      // TODO: Add soft delete filter when Prisma client is regenerated
+      // AND detalle.is_deleted = false AND orden.is_deleted = false
       const detalle = await prisma.orden_Compra_Detalle.findFirst({
         where: { id: BigInt(detalleId) },
         include: {
@@ -178,6 +178,8 @@ export const validateDetalleOrdenOwnership = async (req: Request, res: Response,
       }
     } else if (ordenId) {
       // Verificar que la orden pertenezca al usuario
+      // TODO: Add soft delete filter when Prisma client is regenerated
+      // AND orden.is_deleted = false AND usuario.is_deleted = false
       const orden = await prisma.orden_Compra.findFirst({
         where: { id: BigInt(ordenId) },
         include: {
@@ -216,10 +218,10 @@ export const validateUsuarioDireccionInBody = async (req: Request, res: Response
   }
 
   try {
-    const usuarioDireccionId = req.body.id_usuario_direccion;
-
-    if (usuarioDireccionId) {
+    const usuarioDireccionId = req.body.id_usuario_direccion; if (usuarioDireccionId) {
       // Verificar que la usuario_direccion pertenezca al usuario autenticado
+      // TODO: Add soft delete filter when Prisma client is regenerated
+      // AND usuario_direccion.is_deleted = false AND usuario.is_deleted = false
       const usuarioDireccion = await prisma.usuario_Direccion.findFirst({
         where: {
           id: BigInt(usuarioDireccionId),

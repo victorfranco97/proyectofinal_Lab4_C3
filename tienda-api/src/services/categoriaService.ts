@@ -1,22 +1,42 @@
-import { PrismaClient } from '@prisma/client';
+import { Categoria, PrismaClient } from '@prisma/client';
 import { transformBigInt } from '../utils/prismaUtils';
+import { SoftDeleteOptions, SoftDeleteService, SoftDeleteUtils } from '../utils/softDeleteUtils';
+
 const prisma = new PrismaClient();
 
-export class CategoriaService {
-  async getAll() {
+export class CategoriaService extends SoftDeleteService<Categoria> {
+  constructor() {
+    super(prisma, 'categoria');
+  }
+
+  async getAll(options: SoftDeleteOptions = {}) {
     try {
-      const category = await prisma.categoria.findMany({ include: { productos: true } });
-      return transformBigInt(category);
+      const categorias = await this.findManyWithSoftDelete({
+        include: {
+          productos: {
+            where: SoftDeleteUtils.getActiveFilter()
+          }
+        },
+        softDeleteOptions: options
+      });
+      return transformBigInt(categorias);
     } catch (error) {
       throw new Error('Error fetching categories');
     }
   }
 
-  async getById(id: number) { // Cambiado de string a number
+  async getById(id: bigint, options: SoftDeleteOptions = {}) {
     try {
-      const category = await prisma.categoria.findUnique({ where: { id: BigInt(id) }, include: { productos: true } });
-      if (!category) throw new Error('Category not found');
-      return transformBigInt(category);
+      const categoria = await this.findUniqueWithSoftDelete(BigInt(id), {
+        include: {
+          productos: {
+            where: SoftDeleteUtils.getActiveFilter()
+          }
+        },
+        softDeleteOptions: options
+      });
+      if (!categoria) throw new Error('Category not found');
+      return transformBigInt(categoria);
     } catch (error) {
       throw error;
     }
@@ -24,28 +44,51 @@ export class CategoriaService {
 
   async create(data: { nombre: string }) {
     try {
-      const category = await prisma.categoria.create({ data });
-      return transformBigInt(category);
+      const categoria = await prisma.categoria.create({ data });
+      return transformBigInt(categoria);
     } catch (error) {
       throw new Error('Error creating category');
     }
   }
 
-  async update(id: number, data: { nombre?: string }) { // Cambiado de string a number
+  async update(id: bigint, data: { nombre?: string }) {
     try {
-      const category = await prisma.categoria.update({ where: { id: BigInt(id) }, data });
-      return transformBigInt(category);
+      const categoria = await prisma.categoria.update({
+        where: {
+          id: BigInt(id),
+          ...SoftDeleteUtils.getActiveFilter()
+        },
+        data
+      });
+      return transformBigInt(categoria);
     } catch (error) {
       throw new Error('Error updating category');
     }
   }
 
-  async delete(id: number) { // Cambiado de string a number
+  async delete(id: bigint) {
     try {
-      const category = await prisma.categoria.delete({ where: { id: BigInt(id) } });
-      return transformBigInt(category);
+      // Baja lógica
+      const categoria = await this.softDelete(BigInt(id));
+      return transformBigInt(categoria);
     } catch (error) {
       throw new Error('Error deleting category');
+    }
+  } async restore(id: bigint): Promise<Categoria> {
+    try {
+      const categoria = await super.restore(id);
+      return transformBigInt(categoria);
+    } catch (error) {
+      throw new Error('Error restoring category');
+    }
+  }
+
+  async permanentDelete(id: number) {
+    try {
+      const categoria = await prisma.categoria.delete({ where: { id: BigInt(id) } });
+      return transformBigInt(categoria);
+    } catch (error) {
+      throw new Error('Error permanently deleting category');
     }
   }
 }

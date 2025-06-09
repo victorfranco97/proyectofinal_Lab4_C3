@@ -1,9 +1,13 @@
-import { PrismaClient, Orden_Compra as PrismaOrden_Compra, Prisma } from '@prisma/client';
+import { Prisma, PrismaClient, Orden_Compra as PrismaOrden_Compra } from '@prisma/client';
 import { transformBigInt } from '../utils/prismaUtils';
+import { SoftDeleteOptions, SoftDeleteService, SoftDeleteUtils } from '../utils/softDeleteUtils';
 
 const prisma = new PrismaClient();
 
-export class OrdenCompraService {
+export class OrdenCompraService extends SoftDeleteService<PrismaOrden_Compra> {
+  constructor() {
+    super(prisma, 'orden_Compra');
+  }
   async create(data: { id_usuario_direccion: number; total: number; fecha_compra: string }): Promise<any> {
     try {
       console.log('Creating orden_compra with data:', data);
@@ -29,20 +33,31 @@ export class OrdenCompraService {
       throw new Error('Error creating orden_compra: ' + (error as Error).message);
     }
   }
-
-  async getAll(): Promise<any> {
+  async getAll(options: SoftDeleteOptions = {}): Promise<any> {
     try {
-      const ordenes = await prisma.orden_Compra.findMany({ include: { usuario_direccion: true } });
+      const ordenes = await this.findManyWithSoftDelete({
+        include: {
+          usuario_direccion: {
+            where: SoftDeleteUtils.getActiveFilter()
+          }
+        },
+        softDeleteOptions: options
+      });
       return transformBigInt(ordenes);
     } catch (error) {
       throw new Error('Error fetching ordenes: ' + (error as Error).message);
     }
-  }
-
-  async getById(id: number): Promise<any> {
+  } async getById(id: bigint, options: SoftDeleteOptions = {}): Promise<any> {
     try {
-      console.log('Fetching orden with id:', id, 'as BigInt:', BigInt(id)); // Depuración
-      const orden = await prisma.orden_Compra.findUnique({ where: { id: BigInt(id) }, include: { usuario_direccion: true } });
+      console.log('Fetching orden with id:', id, 'as BigInt:', BigInt(id));
+      const orden = await this.findUniqueWithSoftDelete(BigInt(id), {
+        include: {
+          usuario_direccion: {
+            where: SoftDeleteUtils.getActiveFilter()
+          }
+        },
+        softDeleteOptions: options
+      });
       if (!orden) {
         throw new Error('Orden_Compra not found');
       }
@@ -54,13 +69,12 @@ export class OrdenCompraService {
     } catch (error) {
       console.error('Error fetching orden:', error);
       if ((error as Error).message === 'Orden_Compra not found') {
-        throw new Error('Orden_Compra not found'); // Esto será capturado como 404 por el controlador
+        throw new Error('Orden_Compra not found');
       }
       throw new Error('Error fetching orden: ' + (error as Error).message);
     }
   }
-
-  async update(id: number, data: { id_usuario_direccion?: number; total?: number; fecha_compra?: string }): Promise<any> {
+  async update(id: bigint, data: { id_usuario_direccion?: number; total?: number; fecha_compra?: string }): Promise<any> {
     try {
       const updateData: Partial<Prisma.Orden_CompraUpdateInput> = {};
       if (data.id_usuario_direccion !== undefined) {
@@ -72,9 +86,12 @@ export class OrdenCompraService {
         throw new Error('No valid fields to update');
       }
       const orden = await prisma.orden_Compra.update({
-        where: { id: BigInt(id) },
+        where: {
+          id: BigInt(id),
+          ...SoftDeleteUtils.getActiveFilter()
+        },
         data: updateData,
-        include: { usuario_direccion: true }, // Incluir la relación en la actualización
+        include: { usuario_direccion: true },
       });
       if (!orden) throw new Error('Orden_Compra not found');
       const ordenWithStringDate = {
@@ -87,11 +104,29 @@ export class OrdenCompraService {
     }
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: bigint): Promise<PrismaOrden_Compra> {
+    try {
+      const orden = await this.softDelete(BigInt(id));
+      return transformBigInt(orden);
+    } catch (error) {
+      throw new Error('Error deleting orden: ' + (error as Error).message);
+    }
+  }
+
+  async restore(id: bigint): Promise<PrismaOrden_Compra> {
+    try {
+      const orden = await super.restore(id);
+      return transformBigInt(orden);
+    } catch (error) {
+      throw new Error('Error restoring orden');
+    }
+  }
+
+  async permanentDelete(id: number): Promise<void> {
     try {
       await prisma.orden_Compra.delete({ where: { id: BigInt(id) } });
     } catch (error) {
-      throw new Error('Error deleting orden: ' + (error as Error).message);
+      throw new Error('Error permanently deleting orden: ' + (error as Error).message);
     }
   }
 }

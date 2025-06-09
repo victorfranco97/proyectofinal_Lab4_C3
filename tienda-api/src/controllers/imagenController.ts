@@ -15,7 +15,7 @@ export class ImagenController {
 
   async getById(req: Request, res: Response) {
     try {
-      const image = await imagenService.getById(Number(req.params.id)); // Convertir string a number
+      const image = await imagenService.getById(BigInt(req.params.id)); // Convertir string a bigint
       res.json(image);
     } catch (error) {
       res.status(404).json({ error: (error as Error).message });
@@ -33,7 +33,7 @@ export class ImagenController {
 
   async update(req: Request, res: Response) {
     try {
-      const image = await imagenService.update(Number(req.params.id), req.body); // Convertir string a number
+      const image = await imagenService.update(BigInt(req.params.id), req.body); // Convertir string a bigint
       res.json(image);
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
@@ -42,7 +42,7 @@ export class ImagenController {
 
   async delete(req: Request, res: Response) {
     try {
-      await imagenService.delete(Number(req.params.id)); // Convertir string a number
+      await imagenService.delete(BigInt(req.params.id)); // Convertir string a bigint
       res.status(204).send();
     } catch (error) {
       res.status(404).json({ error: (error as Error).message });

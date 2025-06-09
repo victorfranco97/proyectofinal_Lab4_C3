@@ -15,6 +15,13 @@ model Usuario {
   dni         String
   rol         String
   direcciones Usuario_Direccion[]
+  // Campos de baja lógica
+  deleted_at  DateTime?
+  is_deleted  Boolean             @default(false)
+  created_at  DateTime            @default(now())
+  updated_at  DateTime            @updatedAt
+
+  @@index([is_deleted])
 }
 
 model Direccion {
@@ -24,6 +31,13 @@ model Direccion {
   provincia    String
   pais         String?
   usuarios     Usuario_Direccion[]
+  // Campos de baja lógica
+  deleted_at   DateTime?
+  is_deleted   Boolean          @default(false)
+  created_at   DateTime         @default(now())
+  updated_at   DateTime         @updatedAt
+
+  @@index([is_deleted])
 }
 
 model Usuario_Direccion {
@@ -33,8 +47,14 @@ model Usuario_Direccion {
   usuario        Usuario        @relation(fields: [usuario_id], references: [id])
   direccion      Direccion      @relation(fields: [direccion_id], references: [id])
   ordenes_compra Orden_Compra[] @relation("UsuarioDireccion_OrdenCompra")
+  // Campos de baja lógica
+  deleted_at     DateTime?
+  is_deleted     Boolean        @default(false)
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
 
   @@unique([usuario_id, direccion_id])
+  @@index([is_deleted])
 }
 
 model Orden_Compra {
@@ -44,8 +64,14 @@ model Orden_Compra {
   usuario_direccion    Usuario_Direccion      @relation(fields: [id_usuario_direccion], references: [id], name: "UsuarioDireccion_OrdenCompra")
   total                Float // Nuevo campo agregado
   detalles             Orden_Compra_Detalle[]
+  // Campos de baja lógica
+  deleted_at           DateTime?
+  is_deleted           Boolean                @default(false)
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
 
   @@index([id_usuario_direccion])
+  @@index([is_deleted])
 }
 
 model Orden_Compra_Detalle {
@@ -61,6 +87,13 @@ model Orden_Compra_Detalle {
   talle               Talle            @relation(fields: [id_talle], references: [id])
   precio_descuento    Precio_Descuento @relation(fields: [id_precio_descuento], references: [id])
   imagen              Imagen           @relation(fields: [id_imagen], references: [id])
+  // Campos de baja lógica
+  deleted_at          DateTime?
+  is_deleted          Boolean          @default(false)
+  created_at          DateTime         @default(now())
+  updated_at          DateTime         @updatedAt
+
+  @@index([is_deleted])
 }
 
 model Producto {
@@ -70,18 +103,39 @@ model Producto {
   sexo         String
   categoria    Categoria              @relation(fields: [categoria_id], references: [id])
   detalles     Orden_Compra_Detalle[]
+  // Campos de baja lógica
+  deleted_at   DateTime?
+  is_deleted   Boolean                @default(false)
+  created_at   DateTime               @default(now())
+  updated_at   DateTime               @updatedAt
+
+  @@index([is_deleted])
 }
 
 model Categoria {
-  id        BigInt     @id @default(autoincrement())
-  nombre    String
-  productos Producto[]
+  id         BigInt     @id @default(autoincrement())
+  nombre     String
+  productos  Producto[]
+  // Campos de baja lógica
+  deleted_at DateTime?
+  is_deleted Boolean    @default(false)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+
+  @@index([is_deleted])
 }
 
 model Talle {
-  id       BigInt                 @id @default(autoincrement())
-  numero   String
-  detalles Orden_Compra_Detalle[]
+  id         BigInt                 @id @default(autoincrement())
+  numero     String
+  detalles   Orden_Compra_Detalle[]
+  // Campos de baja lógica
+  deleted_at DateTime?
+  is_deleted Boolean                @default(false)
+  created_at DateTime               @default(now())
+  updated_at DateTime               @updatedAt
+
+  @@index([is_deleted])
 }
 
 model Precio {
@@ -89,6 +143,13 @@ model Precio {
   precio_compra     Float
   precio_venta      Float
   precio_descuentos Precio_Descuento[]
+  // Campos de baja lógica
+  deleted_at        DateTime?
+  is_deleted        Boolean            @default(false)
+  created_at        DateTime           @default(now())
+  updated_at        DateTime           @updatedAt
+
+  @@index([is_deleted])
 }
 
 model Precio_Descuento {
@@ -98,6 +159,13 @@ model Precio_Descuento {
   descuento      Descuento              @relation(fields: [descuento_id], references: [id])
   precio         Precio                 @relation(fields: [precio_id], references: [id])
   orden_detalles Orden_Compra_Detalle[]
+  // Campos de baja lógica
+  deleted_at     DateTime?
+  is_deleted     Boolean                @default(false)
+  created_at     DateTime               @default(now())
+  updated_at     DateTime               @updatedAt
+
+  @@index([is_deleted])
 }
 
 model Descuento {
@@ -106,10 +174,24 @@ model Descuento {
   fecha_inicio      DateTime
   porcentaje        String
   precio_descuentos Precio_Descuento[]
+  // Campos de baja lógica
+  deleted_at        DateTime?
+  is_deleted        Boolean            @default(false)
+  created_at        DateTime           @default(now())
+  updated_at        DateTime           @updatedAt
+
+  @@index([is_deleted])
 }
 
 model Imagen {
   id             BigInt                 @id @default(autoincrement())
   url            String
   orden_detalles Orden_Compra_Detalle[]
+  // Campos de baja lógica
+  deleted_at     DateTime?
+  is_deleted     Boolean                @default(false)
+  created_at     DateTime               @default(now())
+  updated_at     DateTime               @updatedAt
+
+  @@index([is_deleted])
 }

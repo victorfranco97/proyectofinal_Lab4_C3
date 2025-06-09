@@ -18,4 +18,9 @@ router.post('/talles', authenticateToken, requireAdmin, talleController.create.b
 router.put('/talles/:id', authenticateToken, requireAdmin, talleController.update.bind(talleController));
 router.delete('/talles/:id', authenticateToken, requireAdmin, talleController.delete.bind(talleController));
 
+// Soft delete routes for admin
+router.patch('/talles/:id/restore', authenticateToken, requireAdmin, talleController.restore.bind(talleController));
+router.delete('/talles/:id/permanent', authenticateToken, requireAdmin, talleController.permanentDelete.bind(talleController));
+router.get('/talles/deleted', authenticateToken, requireAdmin, talleController.getAllDeleted.bind(talleController));
+
 export default router;

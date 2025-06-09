@@ -1,9 +1,14 @@
 import { PrismaClient, Direccion as PrismaDireccion } from '@prisma/client';
 import { transformBigInt } from '../utils/prismaUtils';
+import { SoftDeleteOptions, SoftDeleteService, SoftDeleteUtils } from '../utils/softDeleteUtils';
 
 const prisma = new PrismaClient();
 
-export class DireccionService {
+export class DireccionService extends SoftDeleteService<PrismaDireccion> {
+  constructor() {
+    super(prisma, 'direccion');
+  }
+
   async create(data: { departamento: string; localidad: string; provincia: string; pais: string }): Promise<any> {
     try {
       const direccion = await prisma.direccion.create({ data });
@@ -13,18 +18,21 @@ export class DireccionService {
     }
   }
 
-  async getAll(): Promise<any> {
+  async getAll(options: SoftDeleteOptions = {}): Promise<any> {
     try {
-      const direcciones = await prisma.direccion.findMany();
+      const direcciones = await this.findManyWithSoftDelete({
+        softDeleteOptions: options
+      });
       return transformBigInt(direcciones);
     } catch (error) {
       throw new Error('Error fetching direcciones: ' + (error as Error).message);
     }
   }
-
-  async getById(id: number): Promise<any> {
+  async getById(id: bigint, options: SoftDeleteOptions = {}): Promise<any> {
     try {
-      const direccion = await prisma.direccion.findUnique({ where: { id: BigInt(id) } });
+      const direccion = await this.findUniqueWithSoftDelete(BigInt(id), {
+        softDeleteOptions: options
+      });
       if (!direccion) throw new Error('Direccion not found');
       return transformBigInt(direccion);
     } catch (error) {
@@ -32,9 +40,15 @@ export class DireccionService {
     }
   }
 
-  async update(id: number, data: { departamento?: string; localidad?: string; provincia?: string; pais?: string }): Promise<any> {
+  async update(id: bigint, data: { departamento?: string; localidad?: string; provincia?: string; pais?: string }): Promise<any> {
     try {
-      const direccion = await prisma.direccion.update({ where: { id: BigInt(id) }, data });
+      const direccion = await prisma.direccion.update({
+        where: {
+          id: BigInt(id),
+          ...SoftDeleteUtils.getActiveFilter()
+        },
+        data
+      });
       if (!direccion) throw new Error('Direccion not found');
       return transformBigInt(direccion);
     } catch (error) {
@@ -42,11 +56,28 @@ export class DireccionService {
     }
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: bigint): Promise<PrismaDireccion> {
+    try {
+      const direccion = await this.softDelete(BigInt(id));
+      return transformBigInt(direccion);
+    } catch (error) {
+      throw new Error('Error deleting direccion: ' + (error as Error).message);
+    }
+  }
+
+  async restore(id: bigint): Promise<PrismaDireccion> {
+    try {
+      const direccion = await super.restore(id);
+      return transformBigInt(direccion);
+    } catch (error) {
+      throw new Error('Error restoring direccion');
+    }
+  }
+  async permanentDelete(id: number): Promise<void> {
     try {
       await prisma.direccion.delete({ where: { id: BigInt(id) } });
     } catch (error) {
-      throw new Error('Error deleting direccion: ' + (error as Error).message);
+      throw new Error('Error permanently deleting direccion: ' + (error as Error).message);
     }
   }
 }

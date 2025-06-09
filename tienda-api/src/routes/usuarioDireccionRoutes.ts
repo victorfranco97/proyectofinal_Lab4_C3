@@ -28,4 +28,9 @@ router.put('/usuario-direccion/:id', authenticateToken, requireAdmin, usuarioDir
 // Eliminar relación: solo admin
 router.delete('/usuario-direccion/:id', authenticateToken, requireAdmin, usuarioDireccionController.delete.bind(usuarioDireccionController));
 
+// Soft delete routes for admin
+router.patch('/usuario-direccion/:id/restore', authenticateToken, requireAdmin, usuarioDireccionController.restore.bind(usuarioDireccionController));
+router.delete('/usuario-direccion/:id/permanent', authenticateToken, requireAdmin, usuarioDireccionController.permanentDelete.bind(usuarioDireccionController));
+router.get('/usuario-direccion/deleted', authenticateToken, requireAdmin, usuarioDireccionController.getAllDeleted.bind(usuarioDireccionController));
+
 export default router;

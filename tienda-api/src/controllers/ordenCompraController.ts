@@ -28,7 +28,7 @@ export class OrdenCompraController {
 
   async getById(req: Request, res: Response) {
     try {
-      const orden = await ordenCompraService.getById(Number(req.params.id));
+      const orden = await ordenCompraService.getById(BigInt(req.params.id));
       res.json(orden);
     } catch (error) {
       const errorMessage = (error as Error).message;
@@ -41,7 +41,7 @@ export class OrdenCompraController {
   async update(req: Request, res: Response) {
     try {
       const { id_usuario_direccion, total, fecha_compra } = req.body; // Cambiado de 'fecha' a 'fecha_compra'
-      const orden = await ordenCompraService.update(Number(req.params.id), { id_usuario_direccion, total, fecha_compra });
+      const orden = await ordenCompraService.update(BigInt(req.params.id), { id_usuario_direccion, total, fecha_compra });
       if (!orden) return res.status(404).json({ error: 'Orden_Compra not found' });
       res.json(orden);
     } catch (error) {
@@ -51,7 +51,7 @@ export class OrdenCompraController {
 
   async delete(req: Request, res: Response) {
     try {
-      await ordenCompraService.delete(Number(req.params.id));
+      await ordenCompraService.delete(BigInt(req.params.id));
       res.status(204).send();
     } catch (error) {
       res.status(404).json({ error: (error as Error).message });

@@ -15,7 +15,7 @@ export class ProductoController {
 
   async getById(req: Request, res: Response) {
     try {
-      const product = await productoService.getById(Number(req.params.id)); // Convertir string a number
+      const product = await productoService.getById(BigInt(req.params.id)); // Convertir string a bigint
       res.json(product);
     } catch (error) {
       res.status(404).json({ error: (error as Error).message });
@@ -33,7 +33,7 @@ export class ProductoController {
 
   async update(req: Request, res: Response) {
     try {
-      const product = await productoService.update(Number(req.params.id), req.body); // Convertir string a number
+      const product = await productoService.update(BigInt(req.params.id), req.body); // Convertir string a bigint
       res.json(product);
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
@@ -42,7 +42,7 @@ export class ProductoController {
 
   async delete(req: Request, res: Response) {
     try {
-      await productoService.delete(Number(req.params.id)); // Convertir string a number
+      await productoService.delete(BigInt(req.params.id)); // Convertir string a bigint
       res.status(204).send();
     } catch (error) {
       res.status(404).json({ error: (error as Error).message });

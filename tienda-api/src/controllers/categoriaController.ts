@@ -15,7 +15,7 @@ export class CategoriaController {
 
   async getById(req: Request, res: Response) {
     try {
-      const category = await categoriaService.getById(Number(req.params.id));
+      const category = await categoriaService.getById(BigInt(req.params.id));
       res.json(category);
     } catch (error) {
       res.status(404).json({ error: (error as Error).message });
@@ -33,7 +33,7 @@ export class CategoriaController {
 
   async update(req: Request, res: Response) {
     try {
-      const category = await categoriaService.update(Number(req.params.id), req.body);
+      const category = await categoriaService.update(BigInt(req.params.id), req.body);
       res.json(category);
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
@@ -42,7 +42,7 @@ export class CategoriaController {
 
   async delete(req: Request, res: Response) {
     try {
-      await categoriaService.delete(Number(req.params.id));
+      await categoriaService.delete(BigInt(req.params.id));
       res.status(204).send();
     } catch (error) {
       res.status(404).json({ error: (error as Error).message });

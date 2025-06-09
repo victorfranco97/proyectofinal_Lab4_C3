@@ -12,10 +12,9 @@ export class DescuentoController {
       res.status(500).json({ error: (error as Error).message });
     }
   }
-
   async getById(req: Request, res: Response) {
     try {
-      const descuento = await descuentoService.getById(Number(req.params.id)); // Convertir string a number
+      const descuento = await descuentoService.getById(BigInt(req.params.id)); // Convertir string a bigint
       res.json(descuento);
     } catch (error) {
       res.status(404).json({ error: (error as Error).message });
@@ -30,10 +29,9 @@ export class DescuentoController {
       res.status(400).json({ error: (error as Error).message });
     }
   }
-
   async update(req: Request, res: Response) {
     try {
-      const descuento = await descuentoService.update(Number(req.params.id), req.body); // Convertir string a number
+      const descuento = await descuentoService.update(BigInt(req.params.id), req.body); // Convertir string a bigint
       res.json(descuento);
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
@@ -42,7 +40,7 @@ export class DescuentoController {
 
   async delete(req: Request, res: Response) {
     try {
-      await descuentoService.delete(Number(req.params.id)); // Convertir string a number
+      await descuentoService.delete(BigInt(req.params.id)); // Convertir string a bigint
       res.status(204).send();
     } catch (error) {
       res.status(404).json({ error: (error as Error).message });

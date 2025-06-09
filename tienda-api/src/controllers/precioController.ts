@@ -15,7 +15,7 @@ export class PrecioController {
 
   async getById(req: Request, res: Response) {
     try {
-      const precio = await precioService.getById(Number(req.params.id)); // Convertir string a number
+      const precio = await precioService.getById(BigInt(req.params.id)); // Convertir string a bigint
       res.json(precio);
     } catch (error) {
       res.status(404).json({ error: (error as Error).message });
@@ -33,7 +33,7 @@ export class PrecioController {
 
   async update(req: Request, res: Response) {
     try {
-      const precio = await precioService.update(Number(req.params.id), req.body); // Convertir string a number
+      const precio = await precioService.update(BigInt(req.params.id), req.body); // Convertir string a bigint
       res.json(precio);
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
@@ -42,7 +42,7 @@ export class PrecioController {
 
   async delete(req: Request, res: Response) {
     try {
-      await precioService.delete(Number(req.params.id)); // Convertir string a number
+      await precioService.delete(BigInt(req.params.id)); // Convertir string a bigint
       res.status(204).send();
     } catch (error) {
       res.status(404).json({ error: (error as Error).message });

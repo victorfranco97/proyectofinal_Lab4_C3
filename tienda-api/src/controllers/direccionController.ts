@@ -15,7 +15,7 @@ export class DireccionController {
 
   async getById(req: Request, res: Response) {
     try {
-      const direccion = await direccionService.getById(Number(req.params.id));
+      const direccion = await direccionService.getById(BigInt(req.params.id));
       if (!direccion) return res.status(404).json({ error: 'Direccion not found' });
       res.json(direccion);
     } catch (error) {
@@ -35,7 +35,7 @@ export class DireccionController {
 
   async update(req: Request, res: Response) {
     try {
-      const direccion = await direccionService.update(Number(req.params.id), req.body);
+      const direccion = await direccionService.update(BigInt(req.params.id), req.body);
       res.json(direccion);
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
@@ -44,7 +44,7 @@ export class DireccionController {
 
   async delete(req: Request, res: Response) {
     try {
-      await direccionService.delete(Number(req.params.id));
+      await direccionService.delete(BigInt(req.params.id));
       res.status(204).send();
     } catch (error) {
       res.status(404).json({ error: (error as Error).message });
